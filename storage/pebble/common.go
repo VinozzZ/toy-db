@@ -2,7 +2,7 @@ package pebble
 
 import (
 	"github.com/cockroachdb/pebble"
-	"github.com/src-d/go-mysql-server/sql"
+	"github.com/dolthub/go-mysql-server/sql"
 )
 
 type storage struct {

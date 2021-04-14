@@ -4,11 +4,11 @@ import (
 	"time"
 
 	p "github.com/VinozzZ/toy-db/storage/pebble"
-	sqle "github.com/src-d/go-mysql-server"
-	"github.com/src-d/go-mysql-server/auth"
-	"github.com/src-d/go-mysql-server/memory"
-	"github.com/src-d/go-mysql-server/server"
-	"github.com/src-d/go-mysql-server/sql"
+	sqle "github.com/dolthub/go-mysql-server"
+	"github.com/dolthub/go-mysql-server/auth"
+	"github.com/dolthub/go-mysql-server/memory"
+	"github.com/dolthub/go-mysql-server/server"
+	"github.com/dolthub/go-mysql-server/sql"
 )
 
 // Example of how to implement a MySQL server based on a Engine:
@@ -27,7 +27,6 @@ import (
 func main() {
 	engine := sqle.NewDefault()
 	engine.AddDatabase(createPebbleDatabase())
-	engine.AddDatabase(sql.NewInformationSchemaDatabase(engine.Catalog))
 
 	config := server.Config{
 		Protocol: "tcp",

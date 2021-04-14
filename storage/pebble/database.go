@@ -1,7 +1,7 @@
 package pebble
 
 import (
-	"github.com/src-d/go-mysql-server/sql"
+	"github.com/dolthub/go-mysql-server/sql"
 )
 
 // Database is an in-memory database.
@@ -45,6 +45,16 @@ func (d *Database) Name() string {
 func (d *Database) Tables() map[string]sql.Table {
 	//TODO: figure out how to list all keys contain `table`
 	return nil
+}
+
+func (d *Database) GetTableInsensitive(ctx *sql.Context, tblName string) (sql.Table, bool, error) {
+	return nil, false, nil
+
+}
+
+// GetTableNames returns the table names of every table in the database
+func (d *Database) GetTableNames(ctx *sql.Context) ([]string, error) {
+	return nil, nil
 }
 
 // AddTable adds a new table to the database.
