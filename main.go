@@ -3,7 +3,8 @@ package main
 import (
 	"time"
 
-	p "github.com/VinozzZ/toy-db/storage/pebble"
+	"github.com/VinozzZ/toy-db/db"
+	"github.com/VinozzZ/toy-db/db/storage"
 	sqle "github.com/dolthub/go-mysql-server"
 	"github.com/dolthub/go-mysql-server/auth"
 	"github.com/dolthub/go-mysql-server/memory"
@@ -25,8 +26,15 @@ import (
 // +----------+-------------------+-------------------------------+---------------------+
 // ```
 func main() {
+	s, err := storage.NewDefaultStorage()
+	if err != nil {
+		panic(err)
+	}
 	engine := sqle.NewDefault()
-	engine.AddDatabase(createPebbleDatabase())
+	// TODO: load up existing databases, put it into catalog
+	// CREATE database
+	// find the function being called when server receives `CREATE DATABASE`
+	engine.AddDatabase(createPebbleDatabase(s))
 
 	config := server.Config{
 		Protocol: "tcp",
@@ -34,16 +42,16 @@ func main() {
 		Auth:     auth.NewNativeSingle("root", "", auth.AllPermissions),
 	}
 
-	s, err := server.NewDefaultServer(config, engine)
+	mysqlServer, err := server.NewDefaultServer(config, engine)
 	if err != nil {
 		panic(err)
 	}
 
-	s.Start()
+	mysqlServer.Start()
 }
 
-func createPebbleDatabase() *p.Database {
-	return p.NewDatabase("pebble")
+func createPebbleDatabase(s *storage.Store) *db.Database {
+	return db.NewDatabase("", s)
 }
 
 func createTestDatabase() *memory.Database {
